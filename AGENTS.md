@@ -31,7 +31,7 @@ See README.md for the full boundary.
 - YAML must parse; the lint covers that too.
 - Changes to `peribolos.yaml` must be validated with a peribolos dry run
   from a `kubernetes-sigs/prow` checkout; a snapshot-faithful change plans
-  **zero mutations** (the `.github: write` grant 404s until this repo
+  **zero mutations** (the `org: write` grant 404s until this repo
   exists on GitHub — validate after pushing):
 
   ```

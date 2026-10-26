@@ -6,7 +6,7 @@ on:
   push:
     branches: [main]
     paths: ['peribolos.yaml', 'org/**']
-  # All PRs, unfiltered: the .github ruleset requires this check on every
+  # All PRs, unfiltered: the org repo's ruleset requires this check on every
   # pull request; a path-filtered trigger would leave it missing and block
   # merges. Fork PRs skip the job (no token) and need an admin bypass.
   pull_request:

@@ -1,4 +1,4 @@
 # safe-settings deployment config. Without this file the app defaults to
 # restrictedRepos: [admin, .github, safe-settings], which silently skips
-# repos/.github.yml -- the governance repo's own ruleset.
+# repos/org.yml -- the governance repo's own ruleset.
 restrictedRepos: []

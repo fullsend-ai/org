@@ -158,7 +158,7 @@ orgs:
         members:
           - dhshah13
         repos:
-          .github: write # governance config; CODEOWNERS routes review to this team
+          org: write # governance config; CODEOWNERS routes review to this team
           agent-eval-harness: write
           agents: write
           assess-rfe: write

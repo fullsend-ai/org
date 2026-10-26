@@ -1,4 +1,4 @@
-# fullsend-ai/.github
+# fullsend-ai/org
 
 Declarative governance for the fullsend-ai organization: the org converges
 to what is committed here. The config was snapshotted from the live org
@@ -37,7 +37,7 @@ when it lands, peribolos can be removed.
   ([#583](https://github.com/github-community-projects/safe-settings/issues/583)).
 - Safe-settings runs in full-sync mode from Actions
   ([docs](https://github.com/github-community-projects/safe-settings/blob/main-enterprise/docs/github-action.md)),
-  config at the repo root (`ADMIN_REPO=.github`, `CONFIG_PATH=.`).
+  config at the repo root (`ADMIN_REPO=org`, `CONFIG_PATH=.`).
 - Peribolos runs from a pinned `kubernetes-sigs/prow` checkout; the
   `gcr.io/k8s-prow` images are stale since the Aug 2024 repo move.
 

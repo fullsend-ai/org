@@ -49,7 +49,7 @@ jobs:
           GH_ORG: fullsend-ai
           APP_ID: ${{ vars.GOVERNANCE_APP_ID }}
           PRIVATE_KEY: ${{ secrets.GOVERNANCE_PRIVATE_KEY }}
-          ADMIN_REPO: .github
+          ADMIN_REPO: org
           CONFIG_PATH: .
           FULL_SYNC_NOP: 'true'
 
@@ -76,5 +76,5 @@ jobs:
           GH_ORG: fullsend-ai
           APP_ID: ${{ vars.GOVERNANCE_APP_ID }}
           PRIVATE_KEY: ${{ secrets.GOVERNANCE_PRIVATE_KEY }}
-          ADMIN_REPO: .github
+          ADMIN_REPO: org
           CONFIG_PATH: .
