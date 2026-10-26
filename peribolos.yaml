@@ -41,6 +41,7 @@ orgs:
       - fege
       - gklein
       - heyjerrybecker
+      - jctanner
       - jflowers
       - jhutar
       - jwm4
@@ -195,6 +196,7 @@ orgs:
           - Aliciapet11
           - fege
           - ederign
+          - jctanner
         repos:
           agent-eval-harness: triage
           agents: triage
