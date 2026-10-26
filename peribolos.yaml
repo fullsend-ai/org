@@ -28,31 +28,67 @@ orgs:
       - waynesun09
 
     members:
+      - adambkaplan
       - Aliciapet11
+      - amastbau
       - andrewevansrh
+      - aoguntayo
       - arewm
       - AshwinUgale
       - Benkapner
+      - ccronca
+      - cgwalters
       - csoceanu
+      - Dannyb48
+      - DaoDaoNoCode
       - deboer-tim
       - dhshah13
       - dora-the-ai-coder
       - durandom
+      - eedri
+      - em-redhat
+      - eskultety
       - fege
+      - gbenhaim
       - gklein
+      - guyoron1
+      - gwenneg
       - heyjerrybecker
+      - HofniGartner
+      - jasonawant
       - jctanner
+      - jefferyb
       - jflowers
       - jhutar
+      - jkhelil
+      - jpuzz0
       - jwm4
       - kelchen123
+      - kylebuch8
+      - lahavyuv86
+      - lipka28
+      - manish-jangra
+      - Marcusk19
       - mfrancisc
       - mrizzi
+      - msu8
+      - nellyc
+      - north-echo
+      - psturc
+      - raks-tt
+      - RaphaelBut
       - ravelley
       - Roming22
       - sahil143
       - shairevivo
+      - SIDDHESH1564
+      - sonupreetam
+      - stoniko
+      - tkopecek
       - tpouyer
+      - twaugh
+      - Victoremepunto
+      - yvonnedevlinrh
 
     repos:
       adoption-analytics:
