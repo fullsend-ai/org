@@ -194,6 +194,7 @@ orgs:
           - andrewevansrh
           - Aliciapet11
           - fege
+          - ederign
         repos:
           agent-eval-harness: triage
           agents: triage
