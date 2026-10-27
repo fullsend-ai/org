@@ -168,7 +168,6 @@ orgs:
           epic-creator: write
           experiments: admin
           fullsend: write
-          infrastructure-as-code: admin
           metrics: write
           rfe-creator: write
           strat-creator: write
