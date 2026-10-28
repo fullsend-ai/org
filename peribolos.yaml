@@ -40,6 +40,7 @@ orgs:
       - durandom
       - fege
       - gklein
+      - guyoron1
       - heyjerrybecker
       - jctanner
       - jflowers
@@ -196,6 +197,7 @@ orgs:
           - fege
           - ederign
           - jctanner
+          - guyoron1
         repos:
           agent-eval-harness: triage
           agents: triage
