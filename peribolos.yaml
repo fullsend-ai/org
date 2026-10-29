@@ -157,23 +157,60 @@ orgs:
           - ben-alkov
           - ascerra
           - rh-hemartin
+        repos:
+          .fullsend: admin
+          adoption-analytics: admin
+          agent-eval-harness: admin
+          agents: admin
+          assess-rfe: admin
+          assess-strat: admin
+          autonomy-analysis: admin
+          autonomy-readiness: admin
+          devlake: admin
+          epic-creator: admin
+          experiments: admin
+          features: admin
+          fullsend: admin
+          metrics: admin
+          org: admin
+          rfe-creator: admin
+          scribe: admin
+          strat-creator: admin
+          test-creator: admin
+      maintainers:
+        description: Maintainers of all repositories
+        privacy: closed
+        maintainers:
+          - rh-hemartin
         members:
           - dhshah13
+          - ifireball
+          - waynesun09
+          - ggallen
+          - maruiz93
+          - ben-alkov
+          - ascerra
+          - ralphbean
         repos:
-          org: write # governance config; CODEOWNERS routes review to this team
-          agent-eval-harness: write
-          agents: write
-          assess-rfe: write
-          assess-strat: write
-          autonomy-analysis: write
-          autonomy-readiness: read
-          epic-creator: write
-          experiments: admin
-          fullsend: write
-          metrics: write
-          rfe-creator: write
-          strat-creator: write
-          test-creator: write
+          .fullsend: maintain
+          adoption-analytics: maintain
+          agent-eval-harness: maintain
+          agents: maintain
+          assess-rfe: maintain
+          assess-strat: maintain
+          autonomy-analysis: maintain
+          autonomy-readiness: maintain
+          devlake: maintain
+          epic-creator: maintain
+          experiments: maintain
+          features: maintain
+          fullsend: maintain
+          metrics: maintain
+          org: maintain
+          rfe-creator: maintain
+          scribe: maintain
+          strat-creator: maintain
+          test-creator: maintain
       triagers:
         description: People with rights to /fs-triage
         privacy: closed
