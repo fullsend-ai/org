@@ -15,7 +15,7 @@ body:
 
         Maintainers: to approve this nomination, reach consensus among
         the existing maintainer team, then add the requester's GitHub
-        username to the `core` team in `peribolos.yaml` and merge the
+        username to the `maintainers` team in `peribolos.yaml` and merge the
         resulting PR.
 
         **Write in your own words.** Do not have an AI generate this request.
