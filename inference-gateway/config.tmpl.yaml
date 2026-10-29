@@ -1,0 +1,38 @@
+# fullsend-inference-gateway: agentgateway, llm mode, GitHub Actions OIDC (strict, ADR 0137).
+# render.py fills the audience, the allowlist (CEL list of "owner/name@repository_id@repository_owner_id")
+# and the per-instance rate caps. A caller matches only when the name and both ids match.
+config:
+  adminAddr: "off"
+  statsAddr: "off"
+  readinessAddr: "off"
+gateways:
+  default: { port: 8080, bindAddress: 0.0.0.0 }
+llm:
+  gateways: [default]
+  discovery: disabled
+  policies:
+    jwtAuth:
+      mode: strict
+      providers:
+      - issuer: https://token.actions.githubusercontent.com
+        audiences: ["__AUD__"]
+        jwks: { url: https://token.actions.githubusercontent.com/.well-known/jwks }
+    localRateLimit:
+    - type: requests
+      maxTokens: __RPM__
+      tokensPerFill: __RPM__
+      fillInterval: 60s
+      key: '((default(jwt.repository, "") + "@" + default(jwt.repository_id, "") + "@" + default(jwt.repository_owner_id, "")) in __ALLOW__) ? "fleet" : "other"'
+    - type: tokens
+      maxTokens: __TPM__
+      tokensPerFill: __TPM__
+      fillInterval: 60s
+      key: '((default(jwt.repository, "") + "@" + default(jwt.repository_id, "") + "@" + default(jwt.repository_owner_id, "")) in __ALLOW__) ? "fleet" : "other"'
+  models:
+  - name: gpt-6.1-sol
+    provider: openAI
+    params: { model: gpt-6.1-sol, apiKey: { file: /etc/agw-upstream/key } }
+    requestHeaders: { remove: [x-api-key] }
+    authorization:
+      rules:
+      - allow: '(default(jwt.repository, "") + "@" + default(jwt.repository_id, "") + "@" + default(jwt.repository_owner_id, "")) in __ALLOW__'

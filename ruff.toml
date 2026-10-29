@@ -1,0 +1,8 @@
+# Rust-based Python lint + format (ruff); see .pre-commit-config.yaml and the lint workflow.
+target-version = "py315"  # newest CPython (security support to 2031-10); CI pins the same
+line-length = 100
+
+[lint]
+select = ["E", "F", "W", "I", "B", "UP", "RUF"]
+# The formatter owns line length; RUF005 would rewrite existing lint.py loops for no gain.
+ignore = ["E501", "RUF005"]

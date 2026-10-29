@@ -81,6 +81,22 @@ for name, cfg in [("settings.yml", settings)] + list(repo_configs.items()):
         if rs.get("enforcement") not in VALID_ENFORCEMENT:
             err(f"{label}: enforcement must be one of {sorted(VALID_ENFORCEMENT)}")
 
+# --- inference gateway: valid inputs, committed config.yaml == rendered output ---
+sys.path.insert(0, str(ROOT / "inference-gateway"))
+sys.dont_write_bytecode = True
+import render  # noqa: E402  # pyright: ignore[reportMissingImports]
+
+try:
+    rendered = render.render()
+except render.INPUT_ERRORS as e:
+    err(f"inference-gateway: {e}")
+else:
+    for e in render.check_config(rendered):
+        err(f"inference-gateway: {e}")
+    gw_config = ROOT / "inference-gateway" / "config.yaml"
+    if not gw_config.exists() or gw_config.read_text() != rendered:
+        err("inference-gateway/config.yaml is stale: run python3 inference-gateway/render.py")
+
 if errors:
     print("lint failures:")
     for e in errors:

@@ -10,6 +10,7 @@ and validated with zero planned mutations.
 | Member privileges, Actions allow policy (covered by neither tool) | `gh api` steps | `org/*.json` |
 | Repo settings, org-level rulesets | safe-settings | `settings.yml`, `repos/<repo>.yml` |
 | Daily compliance verdicts | policy checks | `.github/workflows/policy.yml` |
+| Fleet inference gateway (OpenAI via GitHub OIDC), repo allowlist | `inference-gateway/deploy.sh` (manual) | `inference-gateway/` |
 
 Peribolos and safe-settings converge by deleting unlisted entries — the
 guarantee wanted for access. OpenTofu was rejected for this stack: it only
