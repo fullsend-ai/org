@@ -27,7 +27,11 @@ See README.md for the full boundary.
 
 - Run `python3 scripts/lint.py` (needs pyyaml) — it enforces the
   conventions above: the access boundary, min admins, closed team
-  privacy, no GHSA repos, ruleset shape. CI runs it on every push and PR.
+  privacy, no GHSA repos, ruleset shape and API-required ruleset fields
+  (NOP dry-runs never hit GitHub's payload validation). It also prints
+  the planned mutations -- the config diff against the base branch
+  (`--base <rev>` to override) -- and writes them to the job summary.
+  CI runs it on every push and PR.
 - YAML must parse; the lint covers that too.
 - Changes to `peribolos.yaml` must be validated with a peribolos dry run
   from a `kubernetes-sigs/prow` checkout; a snapshot-faithful change plans
@@ -43,7 +47,9 @@ See README.md for the full boundary.
   ```
 
 - safe-settings changes are validated by the PR dry-run job
-  (`FULL_SYNC_NOP=true`); it must report no unexpected changes.
+  (`FULL_SYNC_NOP=true`); it must report no unexpected changes. That job
+  reads the config from main, not the PR -- review lint's mutation plan
+  for the PR's own changes.
 
 ## Enforcement
 
