@@ -191,6 +191,7 @@ orgs:
           - ben-alkov
           - ascerra
           - ralphbean
+          - jwm4
         repos:
           .fullsend: maintain
           adoption-analytics: maintain
