@@ -1,0 +1,56 @@
+name: Maintainer nomination
+description: Request maintainer access in the fullsend-ai org
+title: "Maintainer nomination: [your GitHub username]"
+labels: [maintainer-request]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Maintainer Nomination
+
+        Use this form to request the Maintainer role. See
+        [MAINTAINERS.md](https://github.com/fullsend-ai/fullsend/blob/main/MAINTAINERS.md)
+        for the full role definition, eligibility criteria, and time
+        commitment.
+
+        Maintainers: to approve this nomination, reach consensus among
+        the existing maintainer team, then add the requester's GitHub
+        username to the `core` team in `peribolos.yaml` and merge the
+        resulting PR.
+
+        **Write in your own words.** Do not have an AI generate this request.
+
+  - type: textarea
+    id: contributions
+    attributes:
+      label: Contribution history
+      description: >
+        Link to merged PRs you have authored or substantive reviews you
+        have provided that demonstrate your familiarity with the project.
+      placeholder: |
+        - https://github.com/fullsend-ai/fullsend/pull/NNN
+        - https://github.com/fullsend-ai/fullsend/pull/NNN
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Why do you want to be a maintainer?
+      description: >
+        Explain what you plan to do as a maintainer (e.g., reviewing
+        PRs, triaging issues, shaping project direction) and how you
+        will stay active.
+      placeholder: "I want to help by..."
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I wrote this request myself (not AI-generated)
+          required: true
+        - label: I have read [MAINTAINERS.md](https://github.com/fullsend-ai/fullsend/blob/main/MAINTAINERS.md) and meet the criteria for the Maintainer role
+          required: true
