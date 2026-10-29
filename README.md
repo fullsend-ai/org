@@ -8,6 +8,7 @@ and validated with zero planned mutations.
 |---|---|---|
 | Members, admins, teams, grants, collaborators, fleet inventory | peribolos | `peribolos.yaml` |
 | Member privileges, Actions allow policy (covered by neither tool) | `gh api` steps | `org/*.json` |
+| Secret scanning + push protection on public repos (covered by neither tool) | `scripts/secret-scanning.sh` | `org/secret-scanning.json` |
 | Repo settings, org-level rulesets | safe-settings | `settings.yml`, `repos/<repo>.yml` |
 | Daily compliance verdicts | policy checks | `.github/workflows/policy.yml` |
 | Fleet inference gateway (OpenAI via GitHub OIDC), repo allowlist | `inference-gateway/deploy.sh` (manual) | `inference-gateway/` |
@@ -34,8 +35,14 @@ when it lands, peribolos can be removed.
 - Safe-settings has no Actions-policy support; the allow policy is
   pinned from `org/actions-*.json` via `gh api`
   ([#656](https://github.com/github-community-projects/safe-settings/issues/656)).
-- Safe-settings has no secret-scanning support; it remains unmanaged
-  ([#583](https://github.com/github-community-projects/safe-settings/issues/583)).
+- Safe-settings has no secret-scanning support
+  ([#583](https://github.com/github-community-projects/safe-settings/issues/583)), and the
+  enterprise-enforced security configuration cannot be attached with an App token (it needs
+  `admin:enterprise`). `scripts/secret-scanning.sh` sets each public repo's
+  `security_and_analysis` to `org/secret-scanning.json` instead (dry run on PRs from main's
+  script, applied by the peribolos workflow's apply job; keys not in the file are left alone).
+  Repos already attached to the enterprise-enforced configuration are left to it; private and internal repos are reported only (their enterprise
+  configuration governs them, and they need Secret Protection).
 - Safe-settings runs in full-sync mode from Actions
   ([docs](https://github.com/github-community-projects/safe-settings/blob/main-enterprise/docs/github-action.md)),
   config at the repo root (`ADMIN_REPO=org`, `CONFIG_PATH=.`).
@@ -94,4 +101,5 @@ in the audit log as the App's bot user.
 
 - People, teams, repo access → `peribolos.yaml`
 - Repo settings and rulesets → `settings.yml` / `repos/<repo>.yml`
+- Secret scanning on public repos → `org/secret-scanning.json`
 - Every change lands through a PR with a lint check and a dry-run check.

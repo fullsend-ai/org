@@ -42,6 +42,28 @@ for p in sorted((ROOT / "org").glob("*.json")):
     except json.JSONDecodeError as e:
         err(f"org/{p.name}: invalid JSON: {e}")
 
+# --- org/secret-scanning.json: known security_and_analysis keys, each {"status": enabled|disabled}
+SECRET_SCANNING_KEYS = {
+    "secret_scanning",
+    "secret_scanning_push_protection",
+    "secret_scanning_non_provider_patterns",
+    "secret_scanning_validity_checks",
+}
+ss_path = ROOT / "org" / "secret-scanning.json"
+try:
+    ss = json.loads(ss_path.read_text()) if ss_path.exists() else None
+except json.JSONDecodeError:
+    ss = None  # already reported as invalid JSON above
+if ss is not None:
+    if not isinstance(ss, dict) or not ss or not set(ss) <= SECRET_SCANNING_KEYS:
+        err(
+            f"org/secret-scanning.json: keys must be a non-empty subset of {sorted(SECRET_SCANNING_KEYS)}"
+        )
+    else:
+        for k, v in ss.items():
+            if v != {"status": "enabled"} and v != {"status": "disabled"}:
+                err(f'org/secret-scanning.json: {k} must be {{"status": "enabled"|"disabled"}}')
+
 # --- access boundary: safe-settings must not own access ---
 for name, cfg in [("settings.yml", settings)] + list(repo_configs.items()):
     if not isinstance(cfg, dict):
