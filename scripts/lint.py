@@ -266,9 +266,9 @@ def diff(old, new, path, out):
             diff(o, n, p, out)
 
 
-def show(v, limit=100):
-    s = json.dumps(v, sort_keys=True, default=str)
-    return s if len(s) <= limit else s[: limit - 3] + "..."
+def show(v):
+    # Complete value, never truncated: the plan must show the exact mutation.
+    return json.dumps(v, sort_keys=True, default=str)
 
 
 plan = {}
