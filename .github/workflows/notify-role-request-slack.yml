@@ -54,7 +54,7 @@ jobs:
             *maintainer-request*)
               request_label="maintainer nomination"
               request_emoji="🛠️"
-              request_context="Review the nomination (maintainer consensus), then add the requester to the core team in peribolos.yaml."
+              request_context="Review the nomination (maintainer consensus), then add the requester to the maintainers team in peribolos.yaml."
               ;;
             *)
               echo "::error::Invalid role request label received"
