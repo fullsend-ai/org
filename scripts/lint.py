@@ -50,11 +50,12 @@ SECRET_SCANNING_KEYS = {
     "secret_scanning_validity_checks",
 }
 ss_path = ROOT / "org" / "secret-scanning.json"
+ss_missing = object()  # absent or unparsable (already reported); a parsed null is invalid
 try:
-    ss = json.loads(ss_path.read_text()) if ss_path.exists() else None
+    ss = json.loads(ss_path.read_text()) if ss_path.exists() else ss_missing
 except json.JSONDecodeError:
-    ss = None  # already reported as invalid JSON above
-if ss is not None:
+    ss = ss_missing
+if ss is not ss_missing:
     if not isinstance(ss, dict) or not ss or not set(ss) <= SECRET_SCANNING_KEYS:
         err(
             f"org/secret-scanning.json: keys must be a non-empty subset of {sorted(SECRET_SCANNING_KEYS)}"

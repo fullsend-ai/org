@@ -6,10 +6,10 @@
 #   image   copy the pinned agentgateway release (by digest) into Artifact Registry
 #   apply   from a clean checkout equal to fullsend-ai/org main: check, add config.yaml as a
 #           config secret version if it changed, roll a revision that pins that version, the
-#           image digest and MAX_INSTANCES, and send all traffic to it (the OpenAI key mount is
-#           left as it is)
+#           image digest, MAX_INSTANCES, CONCURRENCY, CPU/MEMORY and request-based billing, and
+#           send all traffic to it (the OpenAI key mount is left as it is)
 #   post    fail unless a non-JWT bearer gets 401 text/plain and the newest revision is ready,
-#           serves 100% of traffic and logged "started bind"
+#           runs exactly what apply set, serves 100% of traffic and logged "started bind"
 #
 # Needs: curl, gcloud, gh, git, jq, python3 + pyyaml, shasum, skopeo + docker-credential-gcloud (image), podman or
 # docker (check). Never reads the OpenAI key secret.
@@ -104,7 +104,8 @@ apply)
     echo "config version $ver added"
   fi
   gcloud run services update "$N" --project "$P" --region "$R" --image "$AR@sha256:$DIGEST" \
-    --max "$MAX_INSTANCES" --max-instances "$MAX_INSTANCES" \
+    --max "$MAX_INSTANCES" --max-instances "$MAX_INSTANCES" --concurrency "$CONCURRENCY" \
+    --min 0 --min-instances 0 --cpu "$CPU" --memory "$MEMORY" --cpu-throttling \
     --update-secrets "/etc/agw-config/config.yaml=$N-config:$ver"
   # After a rollback traffic is pinned to an old revision; move it back to the new one.
   gcloud run services update-traffic "$N" --project "$P" --region "$R" --to-latest
@@ -139,14 +140,38 @@ post)
     echo "service mounts config version '$mounted', not the newest enabled '$newest'" >&2
     exit 1
   }
+  live_slots=$(jq -r '.spec.template.spec.containerConcurrency // ""' <<<"$st")
+  [ "$live_slots" = "$CONCURRENCY" ] || {
+    echo "service concurrency is '$live_slots', not CONCURRENCY=$CONCURRENCY" >&2
+    exit 1
+  }
+  # The cost model in the README assumes these: request-based billing, scale to zero, CPU/MEMORY.
+  # Both minimums: per revision (--min-instances) and service-wide (--min).
+  sizing=$(jq -r '(.metadata.annotations["run.googleapis.com/minScale"] // "0") as $svcmin | .spec.template | [.spec.containers[0].resources.limits.cpu, .spec.containers[0].resources.limits.memory, (.metadata.annotations["run.googleapis.com/cpu-throttling"] // "true"), (.metadata.annotations["autoscaling.knative.dev/minScale"] // "0"), $svcmin] | join(" ")' <<<"$st")
+  [ "$sizing" = "$CPU $MEMORY true 0 0" ] || {
+    echo "service runs cpu/memory/cpu-throttling/revision-min/service-min '$sizing', not '$CPU $MEMORY true 0 0'" >&2
+    exit 1
+  }
   serving=$(jq -r --arg r "$created" '[.status.traffic[] | select(.revisionName == $r) | .percent] | add // 0' <<<"$st")
   [ "$serving" = 100 ] || {
     echo "$created serves $serving% of traffic, not 100%" >&2
     exit 1
   }
+  # Search from the revision's creation (an unchanged apply keeps an old revision). Its startup
+  # line is gone once the revision outlives Cloud Logging's default 30-day retention.
+  since=$(gcloud run revisions describe "$created" --project "$P" --region "$R" --format='value(metadata.creationTimestamp)')
+  [ -n "$since" ] || {
+    echo "no creationTimestamp for revision $created" >&2
+    exit 1
+  }
+  age_days=$(python3 -c 'import datetime, sys; t = datetime.datetime.fromisoformat(sys.argv[1].replace("Z", "+00:00")); print((datetime.datetime.now(datetime.timezone.utc) - t).days)' "$since")
+  if [ "$age_days" -ge 29 ]; then
+    echo "$created is $age_days days old; its startup log is past retention (readiness and traffic checked above)"
+    exit 0
+  fi
   for _ in 1 2 3 4 5 6; do
-    n=$(gcloud logging read "resource.type=\"cloud_run_revision\" AND resource.labels.revision_name=\"$created\" AND textPayload:\"started bind\"" \
-      --project "$P" --freshness 24h --limit 1 --format 'value(textPayload)' | wc -l)
+    n=$(gcloud logging read "resource.type=\"cloud_run_revision\" AND resource.labels.revision_name=\"$created\" AND textPayload:\"started bind\" AND timestamp>=\"$since\"" \
+      --project "$P" --limit 1 --format 'value(textPayload)' | wc -l)
     [ "$n" -ge 1 ] && {
       echo "$created started"
       exit 0
