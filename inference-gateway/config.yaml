@@ -20,13 +20,13 @@ llm:
         jwks: { url: https://token.actions.githubusercontent.com/.well-known/jwks }
     localRateLimit:
     - type: requests
-      maxTokens: 120
-      tokensPerFill: 120
+      maxTokens: 2000
+      tokensPerFill: 2000
       fillInterval: 60s
       key: '((default(jwt.repository, "") + "@" + default(jwt.repository_id, "") + "@" + default(jwt.repository_owner_id, "")) in ["fullsend-ai/fullsend@1176916808@271249281", "fullsend-ai/agents@1281367826@271249281", "fullsend-ai/experiments@1213516245@271249281", "fullsend-ai/org@1434056985@271249281", "fullsend-ai/metrics@1233037018@271249281", "fullsend-ai/pi-anthropic-vertex@1357519735@271249281", "fullsend-ai/pi-xai-vertex@1345409369@271249281", "fullsend-ai/pi-inference-gateway@1412079279@271249281", "fullsend-ai/epic-creator@1228530308@271249281", "fullsend-ai/strat-creator@1206873602@271249281", "fullsend-ai/assess-rfe@1187629993@271249281", "fullsend-ai/agent-eval-harness@1199743538@271249281", "fullsend-ai/rfe-creator@1190031643@271249281", "fullsend-ai/test-creator@1229029908@271249281"]) ? "fleet" : "other"'
     - type: tokens
-      maxTokens: 1000000
-      tokensPerFill: 1000000
+      maxTokens: 20000000
+      tokensPerFill: 20000000
       fillInterval: 60s
       key: '((default(jwt.repository, "") + "@" + default(jwt.repository_id, "") + "@" + default(jwt.repository_owner_id, "")) in ["fullsend-ai/fullsend@1176916808@271249281", "fullsend-ai/agents@1281367826@271249281", "fullsend-ai/experiments@1213516245@271249281", "fullsend-ai/org@1434056985@271249281", "fullsend-ai/metrics@1233037018@271249281", "fullsend-ai/pi-anthropic-vertex@1357519735@271249281", "fullsend-ai/pi-xai-vertex@1345409369@271249281", "fullsend-ai/pi-inference-gateway@1412079279@271249281", "fullsend-ai/epic-creator@1228530308@271249281", "fullsend-ai/strat-creator@1206873602@271249281", "fullsend-ai/assess-rfe@1187629993@271249281", "fullsend-ai/agent-eval-harness@1199743538@271249281", "fullsend-ai/rfe-creator@1190031643@271249281", "fullsend-ai/test-creator@1229029908@271249281"]) ? "fleet" : "other"'
   models:

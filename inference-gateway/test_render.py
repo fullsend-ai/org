@@ -59,14 +59,20 @@ class RenderTest(unittest.TestCase):
 
     def test_env_missing_duplicate_and_shell(self):
         env = (self.dir / "gateway.env").read_text()
-        self.write("gateway.env", env.replace("RPM=120\n", ""))
-        self.assertRejected(render.load_env, "missing ['RPM']")
+        lines = {line.split("=", 1)[0]: line for line in env.splitlines() if "=" in line}
+        for key in render.INT_KEYS:
+            with self.subTest(key=key):
+                self.assertIn(key, lines, f"{key} missing from the committed gateway.env")
+                self.write("gateway.env", env.replace(lines[key] + "\n", ""))
+                self.assertRejected(render.load_env, f"missing ['{key}']")
+                self.write("gateway.env", env.replace(lines[key], f"{key}=$(id)"))
+                self.assertRejected(render.load_env, "plain value")
+                self.write("gateway.env", env.replace(lines[key], f"{key}=0"))
+                self.assertRejected(render.load_env, "positive integer")
+        self.write("gateway.env", env.replace(lines["CONCURRENCY"], "CONCURRENCY=1001"))
+        self.assertRejected(render.load_env, "at most 1000")
         self.write("gateway.env", env + "DIGEST=" + "0" * 64 + "\n")
         self.assertRejected(render.load_env, "duplicate DIGEST")
-        self.write("gateway.env", env.replace("RPM=120", "RPM=$(id)"))
-        self.assertRejected(render.load_env, "plain value")
-        self.write("gateway.env", env.replace("RPM=120", "RPM=0"))
-        self.assertRejected(render.load_env, "positive integer")
         self.write("gateway.env", env + "EXTRA=1\n")
         self.assertRejected(render.load_env, "expected KEY=VALUE")
 

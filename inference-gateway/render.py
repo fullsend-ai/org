@@ -17,8 +17,22 @@ from pathlib import Path
 import yaml
 
 HERE = Path(__file__).resolve().parent
-ENV_KEYS = ("P", "PNUM", "R", "N", "AUD", "VERSION", "DIGEST", "RPM", "TPM", "MAX_INSTANCES")
-INT_KEYS = ("PNUM", "RPM", "TPM", "MAX_INSTANCES")
+ENV_KEYS = (
+    "P",
+    "PNUM",
+    "R",
+    "N",
+    "AUD",
+    "VERSION",
+    "DIGEST",
+    "RPM",
+    "TPM",
+    "MAX_INSTANCES",
+    "CONCURRENCY",
+    "CPU",
+    "MEMORY",
+)
+INT_KEYS = ("PNUM", "RPM", "TPM", "MAX_INSTANCES", "CONCURRENCY", "CPU")
 # deploy.sh and the lint workflow eval the --print-env output: keep this to shell-inert characters.
 SAFE_VALUE = re.compile(r"^[A-Za-z0-9._:/-]+$")
 REPO_NAME = re.compile(r"^[A-Za-z0-9-]+/[A-Za-z0-9._-]+$")
@@ -57,6 +71,8 @@ def load_env() -> dict:
     for k in INT_KEYS:
         if not env[k].isdigit() or int(env[k]) < 1:
             raise ValueError(f"gateway.env: {k} must be a positive integer")
+    if int(env["CONCURRENCY"]) > 1000:
+        raise ValueError("gateway.env: CONCURRENCY must be at most 1000 (Cloud Run's maximum)")
     if not re.fullmatch(r"[0-9a-f]{64}", env["DIGEST"]):
         raise ValueError("gateway.env: DIGEST must be a sha256 hex digest")
     return env
