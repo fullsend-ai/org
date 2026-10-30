@@ -177,6 +177,53 @@ orgs:
           scribe: admin
           strat-creator: admin
           test-creator: admin
+      fullsend-triagers:
+        description: People with rights to /fs-triage on the fullsend repo group
+        privacy: closed
+        maintainers:
+          - ralphbean
+        members:
+          - gklein
+          - durandom
+          - jflowers
+          - jhutar
+          - ravelley
+          - mrizzi
+          - tpouyer
+          - mfrancisc
+          - jwm4
+          - deboer-tim
+          - dhshah13
+          - shairevivo
+          - andrewevansrh
+          - Aliciapet11
+          - fege
+          - ederign
+          - jctanner
+          - guyoron1
+        repos:
+          agents: triage
+          experiments: triage
+          fullsend: triage
+      fullsend-writers:
+        description: People with access to /fs-code on the fullsend repo group
+        privacy: closed
+        maintainers:
+          - ralphbean
+        members:
+          - gklein
+          - jflowers
+          - Roming22
+          - ravelley
+          - jwm4
+          - Benkapner
+          - dhshah13
+          - shairevivo
+          - csoceanu
+        repos:
+          agents: write
+          experiments: write
+          fullsend: write
       maintainers:
         description: Maintainers of all repositories
         privacy: closed
@@ -238,11 +285,9 @@ orgs:
           - guyoron1
         repos:
           agent-eval-harness: triage
-          agents: triage
           assess-rfe: triage
           assess-strat: triage
           epic-creator: triage
-          fullsend: triage
           rfe-creator: triage
           strat-creator: triage
           test-creator: triage
@@ -264,11 +309,9 @@ orgs:
         repos:
           .fullsend: write
           agent-eval-harness: write
-          agents: write
           assess-rfe: write
           assess-strat: write
           epic-creator: write
-          fullsend: write
           rfe-creator: write
           strat-creator: write
           test-creator: write
