@@ -62,8 +62,8 @@ jobs:
           fi
 
           echo "## Per-repo results" >> "$summary"
-          echo '| repo | default-branch ruleset | CODEOWNERS | SECURITY.md |' >> "$summary"
-          echo '|---|---|---|---|' >> "$summary"
+          echo '| repo | default-branch ruleset | CODEOWNERS | SECURITY.md | secret scanning (org/secret-scanning.json) |' >> "$summary"
+          echo '|---|---|---|---|---|' >> "$summary"
 
           # covered = an org-level or repo-level branch ruleset, not disabled,
           # whose ref_name conditions include ~DEFAULT_BRANCH (or are empty)
@@ -108,5 +108,27 @@ jobs:
                 row+=" **MISSING** |"
               fi
             done
+            # public repos must match org/secret-scanning.json; archived, private and internal
+            # repos are n/a; a failed read is an error, never a pass or n/a
+            if ss=$(gh api "repos/$ORG/$repo" --jq '{visibility, archived, sa: .security_and_analysis}' 2>/dev/null); then
+              if [ "$(jq -r .archived <<< "$ss")" = true ]; then
+                row+=" n/a (archived) |"
+              elif [ "$(jq -r .visibility <<< "$ss")" != public ]; then
+                row+=" n/a ($(jq -r .visibility <<< "$ss")) |"
+              elif [ "$(jq -r '.sa == null' <<< "$ss")" = true ]; then
+                row+=" **ERROR** (security_and_analysis not visible) |"
+              elif jq -e --slurpfile want org/secret-scanning.json \
+                '.sa as $sa | $want[0] | to_entries | all(.value.status == ($sa[.key].status // "disabled"))' \
+                <<< "$ss" > /dev/null; then
+                row+=" ok |"
+              elif [ "$(gh api "repos/$ORG/$repo/code-security-configuration" --jq '.status // ""' 2>/dev/null)" = enterprise_enforced ]; then
+                # the enterprise configuration owns it; scripts/secret-scanning.sh leaves it alone
+                row+=" differs (enterprise-enforced) |"
+              else
+                row+=" **MISSING** |"
+              fi
+            else
+              row+=" **ERROR** |"
+            fi
             echo "$row" >> "$summary"
           done

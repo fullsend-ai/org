@@ -51,6 +51,8 @@ See README.md for the full boundary.
 
 - safe-settings changes are validated by the PR dry-run job
   (`FULL_SYNC_NOP=true`); it must report no unexpected changes.
+- `org/secret-scanning.json` changes show in the PR dry run (`scripts/secret-scanning.sh`,
+  run from the base branch); merges and the daily schedule apply them to public repos.
 
 ## Enforcement
 

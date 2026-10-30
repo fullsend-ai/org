@@ -5,7 +5,7 @@ name: peribolos
 on:
   push:
     branches: [main]
-    paths: ['peribolos.yaml', 'org/**']
+    paths: ['peribolos.yaml', 'org/**', 'scripts/secret-scanning.sh']
   # All PRs, unfiltered: the org repo's ruleset requires this check on every
   # pull request; a path-filtered trigger would leave it missing and block
   # merges. Fork PRs skip the job (no token) and need an admin bypass.
@@ -64,6 +64,32 @@ jobs:
             --ignore-enterprise-teams \
             --fix-org --fix-org-members --fix-teams --fix-team-members --fix-team-repos \
             --fix-collaborators
+      # The PR checkout is untrusted: run the base branch's script (PR data only) with a
+      # read-only token, never the PR's own script with the write-capable governance token.
+      - name: Mint read-only token for the secret scanning dry run
+        id: ss-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          app-id: ${{ vars.GOVERNANCE_APP_ID }}
+          private-key: ${{ secrets.GOVERNANCE_PRIVATE_KEY }}
+          owner: fullsend-ai
+          permission-administration: read
+          permission-metadata: read
+      - name: Secret scanning dry run (main's script)
+        # Informational until the first run after merge shows the read-only token can see
+        # security_and_analysis; then drop continue-on-error so drift-read failures block.
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ steps.ss-token.outputs.token }}
+          WANT: ${{ github.workspace }}/org/secret-scanning.json
+        run: |
+          # Public repo: an anonymous fetch of main works with persist-credentials: false.
+          git fetch -q --depth 1 origin refs/heads/main
+          if git show "FETCH_HEAD:scripts/secret-scanning.sh" > /tmp/secret-scanning.sh 2>/dev/null; then
+            bash /tmp/secret-scanning.sh
+          else
+            echo "scripts/secret-scanning.sh is not on main yet; its dry run starts once it merges"
+          fi
 
   apply:
     if: github.event_name != 'pull_request'
@@ -114,3 +140,7 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: gh api -X PUT "/orgs/$ORG/actions/permissions" --input org/actions-permissions.json
+      - name: Apply secret scanning (public repos)
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: bash scripts/secret-scanning.sh --apply
