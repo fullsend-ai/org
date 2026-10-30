@@ -29,6 +29,13 @@ See README.md for the full boundary.
   conventions above: the access boundary, min admins, closed team
   privacy, no GHSA repos, ruleset shape. CI runs it on every push and PR.
 - YAML must parse; the lint covers that too.
+- `pre-commit install` once per clone runs Betterleaks on staged changes, ruff (Python,
+  `ruff.toml`) and shuck (shell, `.shuck.toml`) lint + format checks, plus the lint; CI also
+  scans the whole history with Betterleaks.
+- Python code targets 3.15 (`ruff.toml`; CI pins it): the formatter may emit syntax that needs
+  3.14+, so run the scripts and hooks with Python 3.15.
+- After editing `inference-gateway/` inputs, run `python3 inference-gateway/render.py`; lint
+  fails on a stale `config.yaml`.
 - Changes to `peribolos.yaml` must be validated with a peribolos dry run
   from a `kubernetes-sigs/prow` checkout; a snapshot-faithful change plans
   **zero mutations** (the `org: write` grant 404s until this repo

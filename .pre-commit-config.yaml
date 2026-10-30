@@ -1,0 +1,35 @@
+# Local hooks: `pre-commit install` once per clone. CI runs the same checks in the lint job
+# (Betterleaks over the whole history there, since this hook only sees staged changes).
+repos:
+  - repo: https://github.com/betterleaks/betterleaks
+    rev: 81aff7a638638aae3a659845d089043e1d8fe9ac # v1.9.0
+    hooks:
+      - id: betterleaks
+  # Python: ruff (Rust) lint + format, config in ruff.toml.
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: 25bcf95026b96e2dd3c0aec3090c3d6ef6ca2e6c # v0.17.3
+    hooks:
+      - id: ruff-check
+      - id: ruff-format
+        types_or: [python]
+  # Shell: shuck (Rust) lint + format, config in .shuck.toml.
+  - repo: https://github.com/ewhauser/shuck
+    rev: ed4930b2f3483ff9e954ce8725362b1cb14a6a92 # v0.2.7
+    hooks:
+      - id: shuck
+        types_or: [shell]
+  - repo: local
+    hooks:
+      - id: shuck-format
+        name: shuck format --check
+        entry: shuck format --check
+        language: python
+        additional_dependencies: [shuck-cli==0.2.7]
+        types_or: [shell]
+      - id: governance-lint
+        name: governance lint (scripts/lint.py)
+        entry: python3 scripts/lint.py
+        language: python
+        additional_dependencies: [pyyaml==6.0.3]
+        pass_filenames: false
+        always_run: true

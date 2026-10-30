@@ -1,0 +1,19 @@
+# Repositories whose GitHub Actions OIDC token may call the inference gateway.
+# A token matches only when name, repository_id and repository_owner_id all match,
+# so a re-created repo or org with a listed name is refused. Look the ids up with:
+#   gh api repos/<owner>/<name> --jq '"\(.id) \(.owner.id)"'
+repos:
+  - { name: fullsend-ai/fullsend, id: "1176916808", owner_id: "271249281" }
+  - { name: fullsend-ai/agents, id: "1281367826", owner_id: "271249281" }
+  - { name: fullsend-ai/experiments, id: "1213516245", owner_id: "271249281" }
+  - { name: fullsend-ai/org, id: "1434056985", owner_id: "271249281" }
+  - { name: fullsend-ai/metrics, id: "1233037018", owner_id: "271249281" }
+  - { name: fullsend-ai/pi-anthropic-vertex, id: "1357519735", owner_id: "271249281" }
+  - { name: fullsend-ai/pi-xai-vertex, id: "1345409369", owner_id: "271249281" }
+  - { name: fullsend-ai/pi-inference-gateway, id: "1412079279", owner_id: "271249281" }
+  - { name: fullsend-ai/epic-creator, id: "1228530308", owner_id: "271249281" }
+  - { name: fullsend-ai/strat-creator, id: "1206873602", owner_id: "271249281" }
+  - { name: fullsend-ai/assess-rfe, id: "1187629993", owner_id: "271249281" }
+  - { name: fullsend-ai/agent-eval-harness, id: "1199743538", owner_id: "271249281" }
+  - { name: fullsend-ai/rfe-creator, id: "1190031643", owner_id: "271249281" }
+  - { name: fullsend-ai/test-creator, id: "1229029908", owner_id: "271249281" }

@@ -1,0 +1,8 @@
+# Rust-based shell lint + format (shuck); see .pre-commit-config.yaml and the lint workflow.
+[check]
+# Workflow-embedded shell is not linted yet (policy.yml matches globs on purpose).
+embedded = false
+
+[format]
+indent-style = "space"
+indent-width = 2
