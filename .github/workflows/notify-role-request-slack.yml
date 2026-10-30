@@ -1,93 +1,40 @@
-# Slack notification for triage/write/maintainer role requests, replacing
-# the triage/write branches of fullsend's notify-vouch-slack.yml now that
-# role requests are issues here instead of discussions in fullsend.
 name: Notify Slack on role request
 
 on:
   issues:
-    types: [opened]
+    types: [opened, edited, labeled]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Existing role request to notify (already notified requests are skipped)
+        required: true
+        type: number
 
 permissions: {}
+
+concurrency:
+  group: role-request-slack-${{ github.event.issue.number || inputs.issue_number }}
+  cancel-in-progress: false
 
 jobs:
   notify:
     if: >-
-      contains(github.event.issue.labels.*.name, 'triage-request') ||
-      contains(github.event.issue.labels.*.name, 'write-request') ||
-      contains(github.event.issue.labels.*.name, 'maintainer-request')
+      github.repository == 'fullsend-ai/org' &&
+      (github.event.action != 'labeled' ||
+      github.event.label.name == 'triage-request' ||
+      github.event.label.name == 'write-request' ||
+      github.event.label.name == 'maintainer-request')
     runs-on: ubuntu-24.04
     timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Send Slack notification
         env:
+          GH_TOKEN: ${{ github.token }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          ISSUE_URL: ${{ github.event.issue.html_url }}
-          ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
-          ISSUE_LABELS: ${{ join(github.event.issue.labels.*.name, ',') }}
-        run: |
-          if [ -z "$SLACK_WEBHOOK_URL" ]; then
-            echo "::error::SLACK_WEBHOOK_URL secret is not configured"
-            exit 1
-          fi
-
-          if [[ ! "$ISSUE_AUTHOR" =~ ^[A-Za-z0-9-]{1,39}$ ]]; then
-            echo "::error::Invalid username received"
-            exit 1
-          fi
-
-          if [[ ! "$ISSUE_URL" =~ ^https://github\.com/[A-Za-z0-9._-]+/[A-Za-z0-9._-]+/issues/[0-9]+$ ]]; then
-            echo "::error::Invalid issue URL received"
-            exit 1
-          fi
-
-          case "$ISSUE_LABELS" in
-            *triage-request*)
-              request_label="triage request"
-              request_emoji="🔎"
-              request_context="Review the request, then add the requester to the triagers team in peribolos.yaml."
-              ;;
-            *write-request*)
-              request_label="write request"
-              request_emoji="✍️"
-              request_context="Review the request (2 maintainer approvals), then add the requester to the writers team in peribolos.yaml."
-              ;;
-            *maintainer-request*)
-              request_label="maintainer nomination"
-              request_emoji="🛠️"
-              request_context="Review the nomination (maintainer consensus), then add the requester to the maintainers team in peribolos.yaml."
-              ;;
-            *)
-              echo "::error::Invalid role request label received"
-              exit 1
-              ;;
-          esac
-
-          payload=$(jq -n \
-            --arg url "$ISSUE_URL" \
-            --arg author "$ISSUE_AUTHOR" \
-            --arg label "$request_label" \
-            --arg emoji "$request_emoji" \
-            --arg context "$request_context" \
-            '{
-              blocks: [
-                {
-                  type: "section",
-                  text: {
-                    type: "mrkdwn",
-                    text: ($emoji + " *New " + $label + "* from *" + $author + "* — <" + $url + "|View issue>")
-                  }
-                },
-                {
-                  type: "context",
-                  elements: [
-                    {
-                      type: "mrkdwn",
-                      text: $context
-                    }
-                  ]
-                }
-              ]
-            }')
-
-          curl -sf -X POST -H 'Content-Type: application/json' \
-            -d "$payload" "$SLACK_WEBHOOK_URL"
+        run: python3 scripts/notify_role_request.py
