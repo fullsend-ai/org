@@ -32,6 +32,8 @@ jobs:
         run: pre-commit run --all-files --show-diff-on-failure
       - name: inference-gateway render tests
         run: python3 -m unittest discover -s inference-gateway
+      - name: role request notification tests
+        run: python3 -m unittest discover -s scripts
       - name: inference-gateway config (agentgateway --validate-only, pinned digest)
         run: |
           set -euo pipefail
