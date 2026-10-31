@@ -1,10 +1,17 @@
+"""Mocked Slack notifier regressions: python3 -m unittest discover -s scripts."""
+
 import contextlib
 import io
+import os
+import subprocess
+import tempfile
 import unittest
+from datetime import UTC, datetime
+from pathlib import Path
 from unittest.mock import Mock, patch
 from urllib.error import HTTPError, URLError
 
-from scripts import notify_role_request as notifier
+import notify_role_request as notifier
 
 
 def issue(title="Write request: durandom", labels=()):
@@ -12,6 +19,7 @@ def issue(title="Write request: durandom", labels=()):
         "title": title,
         "labels": [{"name": name} for name in labels],
         "user": {"login": "durandom"},
+        "created_at": "2026-10-30T16:44:25Z",
     }
 
 
@@ -25,12 +33,81 @@ class NotificationTests(unittest.TestCase):
             with self.subTest(value=value), self.assertRaises(ValueError):
                 notifier.issue_number({"inputs": {"issue_number": value}})
 
-    def notify(self, request, api=None, post=None):
+    def notify(self, request, api=None, post=None, **kwargs):
         api = api or Mock(return_value=request)
         post = post or Mock()
         with contextlib.redirect_stdout(io.StringIO()):
-            notifier.notify(34, api, post)
+            notifier.notify(34, api, post, **kwargs)
         return api, post
+
+    def test_legacy_requests_are_not_automatically_renotified(self):
+        since = datetime(2026, 10, 31, tzinfo=UTC)
+        for labels in ((), ("write-request",)):
+            with self.subTest(labels=labels):
+                api, post = self.notify(issue(labels=labels), automatic_since=since)
+                post.assert_not_called()
+                self.assertEqual(api.call_count, 1)
+
+    def test_legacy_missed_request_can_be_manually_backfilled(self):
+        _, post = self.notify(issue(), automatic_since=None)
+        post.assert_called_once()
+
+    def test_new_requests_can_notify_after_rollout(self):
+        _, post = self.notify(issue(), automatic_since=datetime(2026, 10, 30, tzinfo=UTC))
+        post.assert_called_once()
+
+    def test_rollout_boundary_is_conservative(self):
+        since = datetime.fromisoformat(issue()["created_at"])
+        _, post = self.notify(issue(), automatic_since=since)
+        post.assert_not_called()
+
+    def test_rollout_time_uses_first_parent_merge(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            env = {
+                **os.environ,
+                "GIT_CONFIG_NOSYSTEM": "1",
+                "GIT_CONFIG_GLOBAL": os.devnull,
+                "GIT_AUTHOR_NAME": "Test",
+                "GIT_AUTHOR_EMAIL": "test@example.com",
+                "GIT_COMMITTER_NAME": "Test",
+                "GIT_COMMITTER_EMAIL": "test@example.com",
+                "GIT_AUTHOR_DATE": "2026-10-28T00:00:00Z",
+                "GIT_COMMITTER_DATE": "2026-10-28T00:00:00Z",
+            }
+
+            run = subprocess.run
+
+            def git(*args):
+                return run(
+                    ["git", *args], cwd=root, env=env, check=True, capture_output=True, text=True
+                )
+
+            git("init", "-b", "main")
+            git("-c", "commit.gpgsign=false", "commit", "--allow-empty", "-m", "Initial")
+            git("checkout", "-b", "feature")
+            (root / "scripts").mkdir()
+            (root / "scripts/notify_role_request.py").touch()
+            git("add", ".")
+            git("-c", "commit.gpgsign=false", "commit", "-m", "Add notifier")
+            git("checkout", "main")
+            env["GIT_COMMITTER_DATE"] = "2026-10-31T00:00:00Z"
+            git("-c", "commit.gpgsign=false", "merge", "--no-ff", "feature", "-m", "Deploy")
+            # Keep the tested command unchanged while supplying the temporary checkout as cwd.
+            with patch.object(
+                notifier.subprocess, "run", side_effect=lambda *a, **k: run(*a, cwd=root, **k)
+            ):
+                self.assertEqual(notifier.rollout_time(), datetime(2026, 10, 31, tzinfo=UTC))
+                (root / "scripts/notify_role_request.py").write_text("# Later update\n")
+                env["GIT_COMMITTER_DATE"] = "2026-11-01T00:00:00Z"
+                git("add", ".")
+                git("-c", "commit.gpgsign=false", "commit", "-m", "Update notifier")
+                self.assertEqual(notifier.rollout_time(), datetime(2026, 10, 31, tzinfo=UTC))
+
+    def test_missing_rollout_history_fails_closed(self):
+        with patch.object(notifier.subprocess, "run", return_value=Mock(stdout="")):
+            with self.assertRaises(ValueError):
+                notifier.rollout_time()
 
     def test_missing_label_regression(self):
         api, post = self.notify(issue())

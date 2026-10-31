@@ -1,3 +1,5 @@
+# Notify on opened/edited/labeled requests or manual dispatch; mark successful sends.
+# Pre-rollout issues require manual backfill to avoid repeating legacy deliveries.
 name: Notify Slack on role request
 
 on:
@@ -33,6 +35,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          fetch-depth: 0 # first-parent history determines when this notifier was deployed
       - name: Send Slack notification
         env:
           GH_TOKEN: ${{ github.token }}

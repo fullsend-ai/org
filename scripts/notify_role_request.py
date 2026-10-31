@@ -3,15 +3,29 @@
 import json
 import os
 import re
+import subprocess
+from datetime import UTC, datetime
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 SENT_LABEL = "role-request-slack-notified"
 ROLES = {
-    "triage-request": ("triage request", "🔎", "triagers"),
-    "write-request": ("write request", "✍️", "writers"),
-    "maintainer-request": ("maintainer nomination", "🛠️", "maintainers"),
+    "triage-request": (
+        "triage request",
+        "🔎",
+        "Review the request, then add the requester to the triagers team in peribolos.yaml.",
+    ),
+    "write-request": (
+        "write request",
+        "✍️",
+        "Two maintainers must approve on the request before opening a peribolos.yaml PR.",
+    ),
+    "maintainer-request": (
+        "maintainer nomination",
+        "🛠️",
+        "Maintainer consensus is required before adding the requester to maintainers in peribolos.yaml.",
+    ),
 }
 
 
@@ -63,7 +77,27 @@ def send_slack(payload):
         raise RuntimeError("Slack notification failed") from None
 
 
-def notify(number, api=github_api, post=send_slack):
+def rollout_time():
+    """Use the first-parent addition, so a merge uses deployment time, not PR authorship."""
+    result = subprocess.run(
+        [
+            "git",
+            "log",
+            "-1",
+            "--first-parent",
+            "--diff-filter=A",
+            "--format=%ct",
+            "--",
+            "scripts/notify_role_request.py",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return datetime.fromtimestamp(int(result.stdout.strip()), UTC)
+
+
+def notify(number, api=github_api, post=send_slack, *, automatic_since=None):
     issue = api("GET", f"/issues/{number}")
     if "pull_request" in issue:
         raise ValueError("Expected an issue, not a pull request")
@@ -74,16 +108,18 @@ def notify(number, api=github_api, post=send_slack):
     if role is None:
         print(f"Issue #{number}: not a role request")
         return
+    if automatic_since is not None:
+        created_at = datetime.fromisoformat(issue["created_at"])
+        if created_at <= automatic_since:
+            print(
+                f"Issue #{number}: predates notifier rollout; check delivery before manual backfill"
+            )
+            return
     author = issue["user"]["login"]
     if not re.fullmatch(r"[A-Za-z0-9-]{1,39}", author):
         raise ValueError("Invalid issue author")
     url = f"https://github.com/fullsend-ai/org/issues/{number}"
-    label, emoji, team = ROLES[role]
-    context = f"Review the request, then add the requester to the {team} team in peribolos.yaml."
-    if role == "write-request":
-        context = "Two maintainers must approve on the request before opening a peribolos.yaml PR."
-    elif role == "maintainer-request":
-        context = "Maintainer consensus is required before adding the requester to maintainers in peribolos.yaml."
+    label, emoji, context = ROLES[role]
     try:
         api("GET", f"/labels/{SENT_LABEL}")
     except HTTPError as error:
@@ -127,4 +163,5 @@ def issue_number(event):
 
 if __name__ == "__main__":
     event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
-    notify(issue_number(event))
+    since = None if os.environ["GITHUB_EVENT_NAME"] == "workflow_dispatch" else rollout_time()
+    notify(issue_number(event), automatic_since=since)
