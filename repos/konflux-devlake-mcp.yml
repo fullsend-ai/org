@@ -1,0 +1,29 @@
+# Fork synced by direct push from konflux-ci/konflux-devlake-mcp.
+# Excluded from the org baseline in settings.yml so main can fast-forward.
+# Re-enable this ruleset to add deletion/non-fast-forward/required_signatures back.
+rulesets:
+- name: protect main
+  target: branch
+  enforcement: disabled
+  conditions:
+    ref_name:
+      include:
+      - ~DEFAULT_BRANCH
+      exclude: []
+  rules:
+  - type: deletion
+  - type: non_fast_forward
+  - type: pull_request
+    parameters:
+      required_approving_review_count: 1
+      dismiss_stale_reviews_on_push: false
+      require_code_owner_review: false
+      require_last_push_approval: false
+      required_review_thread_resolution: false
+      require_extra_approval_for_unattributed_changes: true
+      dismissal_restriction:
+        enabled: false
+        allowed_actors: []
+      required_reviewers: []
+      allowed_merge_methods: [merge, squash, rebase]
+  - type: required_signatures

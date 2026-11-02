@@ -32,6 +32,7 @@ rulesets:
         include: []
         exclude:
           - devlake # fork synced by direct push; see repos/devlake.yml
+          - konflux-devlake-mcp # fork synced by direct push; see repos/konflux-devlake-mcp.yml
           - agent-eval-harness # semantic-release pushes to main with GITHUB_TOKEN; see repos/agent-eval-harness.yml
     bypass_actors:
       - actor_id: 4113971 # renovate-fullsend
