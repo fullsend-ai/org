@@ -57,6 +57,25 @@ when it lands, peribolos can be removed.
   needs an enterprise-level credential (safe-settings ADR 0001).
 - **App grants in rulesets**: bypass actors are pinned in `repos/*.yml`.
 
+## Role request notifications
+
+The Slack notifier recognizes role-request labels and the issue forms' title prefixes,
+including requests submitted without labels. Opening, editing, or applying a role-request
+label checks the current issue. Successful sends add `role-request-slack-notified` so later
+events skip delivery. This label records notification only; it grants no access.
+Automatic sends apply only to issues created after this notifier's first deployment
+on the default branch, determined from the script's addition in first-parent Git history.
+Older issues stay unmarked and require manual backfill: the previous workflow could
+have delivered them without recording a marker. This also keeps missed requests eligible
+for backfill without treating unknown past delivery as success.
+
+To backfill a missed request after deployment, run **Notify Slack on role request** from
+Actions with its `issue_number` (for example, `34`), after checking the channel for an
+earlier delivery. Tests run with `python3 -m unittest discover -s scripts` (or
+`python3 scripts/test_notify_role_request.py`) and mock all external writes.
+If Slack succeeds but recording the marker fails, check the channel before retrying:
+Slack delivery and the GitHub marker cannot be updated atomically.
+
 ## Setup
 
 ### Governance App permissions
