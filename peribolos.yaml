@@ -252,6 +252,7 @@ orgs:
         maintainers:
           - ralphbean
         members:
+          - durandom
           - gklein
           - jflowers
           - Roming22
