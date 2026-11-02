@@ -262,6 +262,7 @@ orgs:
           - dhshah13
           - shairevivo
           - csoceanu
+          - jctanner
         repos:
           .fullsend: write
           agent-eval-harness: write
