@@ -118,6 +118,15 @@ orgs:
         collaborators:
           AshwinUgale: triage
           Roming22: write
+      konflux-devlake-mcp:
+        collaborators:
+          ciaramulligan: maintain
+          ederign: maintain
+          kpiwko: admin
+          mfrancisc: maintain
+          michaelkleinhenz: maintain
+          rnapoles-rh: maintain
+          rsoaresd: admin
       rfe-creator:
         collaborators:
           astefanutti: admin
@@ -171,6 +180,7 @@ orgs:
           experiments: admin
           features: admin
           fullsend: admin
+          konflux-devlake-mcp: admin
           metrics: admin
           org: admin
           rfe-creator: admin
@@ -206,6 +216,7 @@ orgs:
           experiments: maintain
           features: maintain
           fullsend: maintain
+          konflux-devlake-mcp: maintain
           metrics: maintain
           org: maintain
           rfe-creator: maintain
