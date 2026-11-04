@@ -95,6 +95,10 @@ orgs:
           astefanutti: maintain
           ederign: admin
           jctanner: maintain
+      epic-creator-eval:
+        collaborators:
+          jctanner: admin
+          ravelley: admin
       experiments:
         collaborators:
           AshwinUgale: triage
