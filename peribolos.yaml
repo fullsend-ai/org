@@ -95,6 +95,10 @@ orgs:
           astefanutti: maintain
           ederign: admin
           jctanner: maintain
+      epic-creator-eval:
+        collaborators:
+          jctanner: admin
+          ravelley: admin
       experiments:
         collaborators:
           AshwinUgale: triage
@@ -177,6 +181,7 @@ orgs:
           autonomy-readiness: admin
           devlake: admin
           epic-creator: admin
+          epic-creator-eval: admin
           experiments: admin
           features: admin
           fullsend: admin
@@ -213,6 +218,7 @@ orgs:
           autonomy-readiness: maintain
           devlake: maintain
           epic-creator: maintain
+          epic-creator-eval: maintain
           experiments: maintain
           features: maintain
           fullsend: maintain
