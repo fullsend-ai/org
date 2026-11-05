@@ -39,3 +39,5 @@ rulesets:
               integration_id: 15368
             - context: safe-settings-dry-run
               integration_id: 15368
+            - context: DCO
+              integration_id: 1861 # DCO GitHub App
