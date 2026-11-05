@@ -1,5 +1,5 @@
 # Strict ruleset for the governance repo itself: every change here
-# controls the org, so PRs require core review (CODEOWNERS) and all
+# controls the org, so PRs require admins review (CODEOWNERS) and all
 # validation jobs. Fork PRs skip the dry-runs (no token) -- do not merge
 # those without running the validation locally. Merge queue omitted:
 # low-traffic config repo.
