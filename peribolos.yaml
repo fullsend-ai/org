@@ -158,8 +158,9 @@ orgs:
     # closed is GitHub's most transparent team setting; this published
     # file is the public roster.
     teams:
-      core:
-        description: Core team
+      admins:
+        description: Org administrators
+        previously: [core]
         privacy: closed
         maintainers:
           - ralphbean
