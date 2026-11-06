@@ -12,6 +12,7 @@ repos:
   - { name: fullsend-ai/pi-xai-vertex, id: "1345409369", owner_id: "271249281" }
   - { name: fullsend-ai/pi-inference-gateway, id: "1412079279", owner_id: "271249281" }
   - { name: fullsend-ai/epic-creator, id: "1228530308", owner_id: "271249281" }
+  - { name: fullsend-ai/epic-creator-eval, id: "1446166955", owner_id: "271249281" }
   - { name: fullsend-ai/strat-creator, id: "1206873602", owner_id: "271249281" }
   - { name: fullsend-ai/assess-rfe, id: "1187629993", owner_id: "271249281" }
   - { name: fullsend-ai/agent-eval-harness, id: "1199743538", owner_id: "271249281" }
