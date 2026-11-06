@@ -32,18 +32,22 @@ URL=https://$N-$PNUM.$R.run.app
 
 check() {
   python3 "$D/render.py" --check --verify-ids
-  local engine V out
+  local engine V out volume_label=""
   engine=$(command -v podman || command -v docker || true)
   [ -n "$engine" ] || {
     echo "check needs podman or docker" >&2
     exit 1
   }
+  # Podman on SELinux hosts needs a private label on these temporary bind mounts.
+  if [ "${engine##*/}" = podman ]; then
+    volume_label=",Z"
+  fi
   V=$(mktemp -d)
   mkdir -p "$V/config" "$V/upstream"
   cp "$D/config.yaml" "$V/config/"
   printf x >"$V/upstream/key"
   chmod -R a+rX "$V"
-  out=$("$engine" run --rm -v "$V/config:/etc/agw-config:ro" -v "$V/upstream:/etc/agw-upstream:ro" \
+  out=$("$engine" run --rm -v "$V/config:/etc/agw-config:ro$volume_label" -v "$V/upstream:/etc/agw-upstream:ro$volume_label" \
     "$SRC" -f /etc/agw-config/config.yaml --validate-only 2>&1) || {
     rm -rf "$V"
     echo "$out" >&2
