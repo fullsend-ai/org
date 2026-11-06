@@ -13,8 +13,8 @@ body:
         for the full role definition, criteria, and approval requirements.
 
         Maintainers: to approve this request, add the requester's GitHub
-        username to the `writers` team in `peribolos.yaml` and merge the
-        resulting PR. Two maintainers must approve.
+        username to the `fullsend-writers` team in `peribolos.yaml` and
+        merge the resulting PR. Two maintainers must approve.
 
         **Write in your own words.** Do not have an AI generate this request.
 
