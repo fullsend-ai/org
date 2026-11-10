@@ -279,6 +279,7 @@ orgs:
           - shairevivo
           - csoceanu
           - jctanner
+          - Aliciapet11
         repos:
           .fullsend: write
           agent-eval-harness: write
