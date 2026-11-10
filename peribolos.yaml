@@ -53,6 +53,7 @@ orgs:
       - Roming22
       - sahil143
       - shairevivo
+      - tgeagle081
       - tpouyer
 
     repos:
@@ -252,6 +253,7 @@ orgs:
           - ederign
           - jctanner
           - guyoron1
+          - tgeagle081
         repos:
           agent-eval-harness: triage
           agents: triage
