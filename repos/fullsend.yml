@@ -52,3 +52,5 @@ rulesets:
         integration_id: 15368 # GitHub Actions
       - context: playback
         integration_id: 15368 # GitHub Actions
+      - context: semgrep
+        integration_id: 15368 # GitHub Actions
