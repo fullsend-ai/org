@@ -1,0 +1,18 @@
+# Snapshotted from the live ruleset (2026-11-11). Excluded from the org
+# baseline: the daily collector (collect.yml) and the fix-judge writeback
+# (fix-judge.yml) commit data to main with GITHUB_TOKEN, which cannot be
+# bypassed surgically. Keeps the existing deletion / non-fast-forward
+# protection; add PR requirements once the data pushes move to an App
+# token (then remove the exclusion).
+rulesets:
+- name: Protect main
+  target: branch
+  enforcement: active
+  conditions:
+    ref_name:
+      include:
+      - refs/heads/main
+      exclude: []
+  rules:
+  - type: deletion
+  - type: non_fast_forward
