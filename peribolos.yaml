@@ -260,6 +260,7 @@ orgs:
           assess-rfe: triage
           assess-strat: triage
           epic-creator: triage
+          epic-creator-eval: triage
           fullsend: triage
           rfe-creator: triage
           strat-creator: triage
@@ -289,6 +290,7 @@ orgs:
           assess-rfe: write
           assess-strat: write
           epic-creator: write
+          epic-creator-eval: write
           fullsend: write
           rfe-creator: write
           strat-creator: write
