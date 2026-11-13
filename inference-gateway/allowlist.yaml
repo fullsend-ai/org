@@ -18,3 +18,4 @@ repos:
   - { name: fullsend-ai/agent-eval-harness, id: "1199743538", owner_id: "271249281" }
   - { name: fullsend-ai/rfe-creator, id: "1190031643", owner_id: "271249281" }
   - { name: fullsend-ai/test-creator, id: "1229029908", owner_id: "271249281" }
+  - { name: fullsend-ai/react-shopping-cart, id: "1443063811", owner_id: "271249281" }
