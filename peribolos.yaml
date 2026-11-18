@@ -123,6 +123,9 @@ orgs:
         collaborators:
           AshwinUgale: triage
           Roming22: write
+      github-emulator:
+        collaborators:
+          jctanner: admin
       konflux-devlake-mcp:
         collaborators:
           ciaramulligan: maintain
@@ -188,6 +191,7 @@ orgs:
           experiments: admin
           features: admin
           fullsend: admin
+          github-emulator: admin
           konflux-devlake-mcp: admin
           metrics: admin
           org: admin
@@ -226,6 +230,7 @@ orgs:
           experiments: maintain
           features: maintain
           fullsend: maintain
+          github-emulator: maintain
           konflux-devlake-mcp: maintain
           metrics: maintain
           org: maintain
@@ -267,6 +272,7 @@ orgs:
           epic-creator: triage
           epic-creator-eval: triage
           fullsend: triage
+          github-emulator: triage
           react-shopping-cart: triage
           rfe-creator: triage
           strat-creator: triage
@@ -299,6 +305,7 @@ orgs:
           epic-creator: write
           epic-creator-eval: write
           fullsend: write
+          github-emulator: write
           react-shopping-cart: write
           rfe-creator: write
           strat-creator: write
