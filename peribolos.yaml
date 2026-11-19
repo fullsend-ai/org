@@ -81,6 +81,16 @@ orgs:
       autonomy-readiness:
         collaborators:
           ralphbean: admin
+      coverport:
+        collaborators:
+          ciaramulligan: maintain
+          ederign: admin
+          kpiwko: maintain
+          mfrancisc: admin
+          michaelkleinhenz: maintain
+          psturc: admin
+          rnapoles-rh: maintain
+          rsoaresd: maintain
       devlake:
         collaborators:
           ciaramulligan: maintain
@@ -186,6 +196,7 @@ orgs:
           assess-strat: admin
           autonomy-analysis: admin
           autonomy-readiness: admin
+          coverport: admin
           devlake: admin
           epic-creator: admin
           epic-creator-eval: admin
@@ -225,6 +236,7 @@ orgs:
           assess-strat: maintain
           autonomy-analysis: maintain
           autonomy-readiness: maintain
+          coverport: maintain
           devlake: maintain
           epic-creator: maintain
           epic-creator-eval: maintain
