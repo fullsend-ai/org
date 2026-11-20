@@ -118,6 +118,7 @@ in the audit log as the App's bot user.
 
 ## Making changes
 
+- New repository and fullsend agents → [fullsend-ai repository onboarding](docs/fullsend-ai-repository-onboarding.md)
 - People, teams, repo access → `peribolos.yaml`
 - Repo settings and rulesets → `settings.yml` / `repos/<repo>.yml`
 - Secret scanning on public repos → `org/secret-scanning.json`
