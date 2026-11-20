@@ -33,6 +33,7 @@ orgs:
       - AshwinUgale
       - ben-alkov
       - Benkapner
+      - ciaramulligan
       - csoceanu
       - deboer-tim
       - dhshah13
@@ -47,10 +48,17 @@ orgs:
       - jhutar
       - jwm4
       - kelchen123
+      - kpiwko
+      - lipka28
       - mfrancisc
+      - michaelkleinhenz
       - mrizzi
+      - msu8
+      - psturc
       - ravelley
+      - rnapoles-rh
       - Roming22
+      - rsoaresd
       - sahil143
       - shairevivo
       - tgeagle081
@@ -100,6 +108,18 @@ orgs:
           michaelkleinhenz: maintain
           rnapoles-rh: maintain
           rsoaresd: maintain
+      devlake-telemetry-sidecar:
+        collaborators:
+          ciaramulligan: maintain
+          ederign: admin
+          kpiwko: admin
+          lipka28: admin
+          mfrancisc: maintain
+          michaelkleinhenz: admin
+          msu8: admin
+          psturc: admin
+          rnapoles-rh: maintain
+          rsoaresd: admin
       epic-creator:
         collaborators:
           MichaelYochpaz: admin
@@ -144,6 +164,30 @@ orgs:
           kpiwko: admin
           mfrancisc: maintain
           michaelkleinhenz: maintain
+          rnapoles-rh: maintain
+          rsoaresd: admin
+      metrics-executor:
+        collaborators:
+          ciaramulligan: maintain
+          ederign: admin
+          kpiwko: admin
+          lipka28: admin
+          mfrancisc: maintain
+          michaelkleinhenz: admin
+          msu8: admin
+          psturc: admin
+          rnapoles-rh: maintain
+          rsoaresd: admin
+      orgpulse:
+        collaborators:
+          ciaramulligan: maintain
+          ederign: admin
+          kpiwko: admin
+          lipka28: admin
+          mfrancisc: maintain
+          michaelkleinhenz: admin
+          msu8: admin
+          psturc: admin
           rnapoles-rh: maintain
           rsoaresd: admin
       react-shopping-cart:
@@ -198,6 +242,7 @@ orgs:
           autonomy-readiness: admin
           coverport: admin
           devlake: admin
+          devlake-telemetry-sidecar: admin
           epic-creator: admin
           epic-creator-eval: admin
           experiments: admin
@@ -206,7 +251,9 @@ orgs:
           github-emulator: admin
           konflux-devlake-mcp: admin
           metrics: admin
+          metrics-executor: admin
           org: admin
+          orgpulse: admin
           react-shopping-cart: admin
           rfe-creator: admin
           scribe: admin
@@ -238,6 +285,7 @@ orgs:
           autonomy-readiness: maintain
           coverport: maintain
           devlake: maintain
+          devlake-telemetry-sidecar: maintain
           epic-creator: maintain
           epic-creator-eval: maintain
           experiments: maintain
@@ -246,7 +294,9 @@ orgs:
           github-emulator: maintain
           konflux-devlake-mcp: maintain
           metrics: maintain
+          metrics-executor: maintain
           org: maintain
+          orgpulse: maintain
           react-shopping-cart: maintain
           rfe-creator: maintain
           scribe: maintain
@@ -283,10 +333,13 @@ orgs:
           assess-rfe: triage
           assess-strat: triage
           devlake: triage
+          devlake-telemetry-sidecar: triage
           epic-creator: triage
           epic-creator-eval: triage
           fullsend: triage
           github-emulator: triage
+          metrics-executor: triage
+          orgpulse: triage
           react-shopping-cart: triage
           rfe-creator: triage
           strat-creator: triage
@@ -317,10 +370,13 @@ orgs:
           assess-rfe: write
           assess-strat: write
           devlake: write
+          devlake-telemetry-sidecar: write
           epic-creator: write
           epic-creator-eval: write
           fullsend: write
           github-emulator: write
+          metrics-executor: write
+          orgpulse: write
           react-shopping-cart: write
           rfe-creator: write
           strat-creator: write
