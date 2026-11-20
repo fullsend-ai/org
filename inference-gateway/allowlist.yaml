@@ -25,3 +25,7 @@ repos:
   - { name: fullsend-ai/codecov-gateway, id: "1465507754", owner_id: "271249281" }
   - { name: fullsend-ai/codecov-gazebo, id: "1465506604", owner_id: "271249281" }
   - { name: fullsend-ai/codecov-timescaledb, id: "1465509683", owner_id: "271249281" }
+  - { name: fullsend-ai/coverport, id: "1094991953", owner_id: "271249281" }
+  - { name: fullsend-ai/metrics-executor, id: "1465444096", owner_id: "271249281" }
+  - { name: fullsend-ai/devlake-telemetry-sidecar, id: "1465444179", owner_id: "271249281" }
+  - { name: fullsend-ai/orgpulse, id: "1465444260", owner_id: "271249281" }
