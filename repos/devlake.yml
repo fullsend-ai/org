@@ -1,7 +1,7 @@
-# Snapshotted from the live ruleset (2026-10-23). Kept disabled as found;
-# devlake is excluded from the org baseline (fork synced by direct push),
-# so it currently has no active protection -- re-enable this ruleset to
-# add deletion/non-fast-forward/required_signatures back.
+# Snapshotted from the live ruleset (2026-10-23). The org baseline
+# (settings.yml default-branch) now protects main: no deletion, no force
+# push, changes through PRs. This stricter repo ruleset (1 approval,
+# required signatures) stays disabled until the devlake owners opt in.
 rulesets:
 - name: protect main
   target: branch
