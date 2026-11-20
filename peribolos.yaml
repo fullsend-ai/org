@@ -282,6 +282,7 @@ orgs:
           agents: triage
           assess-rfe: triage
           assess-strat: triage
+          devlake: triage
           epic-creator: triage
           epic-creator-eval: triage
           fullsend: triage
@@ -315,6 +316,7 @@ orgs:
           agents: write
           assess-rfe: write
           assess-strat: write
+          devlake: write
           epic-creator: write
           epic-creator-eval: write
           fullsend: write
