@@ -81,6 +81,46 @@ orgs:
       autonomy-readiness:
         collaborators:
           ralphbean: admin
+      codecov-gateway: # fork of codecov/codecov-gateway
+        collaborators:
+          ciaramulligan: maintain
+          ederign: admin
+          kpiwko: maintain
+          mfrancisc: admin
+          michaelkleinhenz: maintain
+          psturc: admin
+          rnapoles-rh: maintain
+          rsoaresd: maintain
+      codecov-gazebo: # fork of codecov/gazebo
+        collaborators:
+          ciaramulligan: maintain
+          ederign: admin
+          kpiwko: maintain
+          mfrancisc: admin
+          michaelkleinhenz: maintain
+          psturc: admin
+          rnapoles-rh: maintain
+          rsoaresd: maintain
+      codecov-timescaledb: # fork of timescale/timescaledb-docker
+        collaborators:
+          ciaramulligan: maintain
+          ederign: admin
+          kpiwko: maintain
+          mfrancisc: admin
+          michaelkleinhenz: maintain
+          psturc: admin
+          rnapoles-rh: maintain
+          rsoaresd: maintain
+      codecov-umbrella: # fork of codecov/umbrella
+        collaborators:
+          ciaramulligan: maintain
+          ederign: admin
+          kpiwko: maintain
+          mfrancisc: admin
+          michaelkleinhenz: maintain
+          psturc: admin
+          rnapoles-rh: maintain
+          rsoaresd: maintain
       coverport:
         collaborators:
           ciaramulligan: maintain
@@ -196,6 +236,10 @@ orgs:
           assess-strat: admin
           autonomy-analysis: admin
           autonomy-readiness: admin
+          codecov-gateway: admin
+          codecov-gazebo: admin
+          codecov-timescaledb: admin
+          codecov-umbrella: admin
           coverport: admin
           devlake: admin
           epic-creator: admin
@@ -236,6 +280,10 @@ orgs:
           assess-strat: maintain
           autonomy-analysis: maintain
           autonomy-readiness: maintain
+          codecov-gateway: maintain
+          codecov-gazebo: maintain
+          codecov-timescaledb: maintain
+          codecov-umbrella: maintain
           coverport: maintain
           devlake: maintain
           epic-creator: maintain
