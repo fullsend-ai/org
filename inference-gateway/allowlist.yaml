@@ -21,3 +21,6 @@ repos:
   - { name: fullsend-ai/react-shopping-cart, id: "1443063811", owner_id: "271249281" }
   - { name: fullsend-ai/github-emulator, id: "1206528715", owner_id: "271249281" }
   - { name: fullsend-ai/devlake, id: "1428851360", owner_id: "271249281" }
+  - { name: fullsend-ai/metrics-executor, id: "1465444096", owner_id: "271249281" }
+  - { name: fullsend-ai/devlake-telemetry-sidecar, id: "1465444179", owner_id: "271249281" }
+  - { name: fullsend-ai/orgpulse, id: "1465444260", owner_id: "271249281" }
