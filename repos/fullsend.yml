@@ -52,6 +52,8 @@ rulesets:
       required_status_checks:
       - context: behaviour
         integration_id: 15368 # GitHub Actions
+      - context: behaviour-github-emulator
+        integration_id: 15368 # GitHub Actions
       - context: playback
         integration_id: 15368 # GitHub Actions
       - context: semgrep
