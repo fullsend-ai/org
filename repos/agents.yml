@@ -56,3 +56,5 @@ rulesets:
         integration_id: 15368 # GitHub Actions
       - context: skillsaw
         integration_id: 15368 # GitHub Actions
+      - context: behaviour-github-emulator
+        integration_id: 15368 # GitHub Actions
