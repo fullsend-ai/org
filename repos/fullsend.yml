@@ -1,4 +1,25 @@
 # Snapshotted from the live ruleset (2026-10-23).
+# Environments are total-state: unlisted ones are deleted on apply.
+environments:
+- name: dev
+- name: e2e-org-pool
+  deployment_branch_policy:
+    protected_branches: false
+    custom_branch_policies:
+    - main
+- name: evals
+- name: forgejo-dev
+- name: forgejo-stage
+- name: functional-tests
+- name: github-pages
+  deployment_branch_policy:
+    protected_branches: false
+    custom_branch_policies:
+    - main
+- name: site-preview
+- name: site-production
+- name: stage
+
 rulesets:
 - name: main
   target: branch
