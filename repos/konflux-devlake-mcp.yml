@@ -1,10 +1,7 @@
-# Fork synced by direct push from konflux-ci/konflux-devlake-mcp.
-# Excluded from the org baseline in settings.yml so main can fast-forward.
-# Re-enable this ruleset to add deletion/non-fast-forward/required_signatures back.
 rulesets:
 - name: protect main
   target: branch
-  enforcement: disabled
+  enforcement: active
   conditions:
     ref_name:
       include:

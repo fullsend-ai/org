@@ -1,11 +1,7 @@
-# Snapshotted from the live ruleset (2026-10-23). Kept disabled as found;
-# devlake is excluded from the org baseline (fork synced by direct push),
-# so it currently has no active protection -- re-enable this ruleset to
-# add deletion/non-fast-forward/required_signatures back.
 rulesets:
 - name: protect main
   target: branch
-  enforcement: disabled
+  enforcement: active
   conditions:
     ref_name:
       include:
