@@ -303,6 +303,58 @@ orgs:
           scribe: admin
           strat-creator: admin
           test-creator: admin
+      fullsend-triagers:
+        description: People with rights to /fs-triage on the fullsend repo group
+        privacy: closed
+        maintainers:
+          - ralphbean
+        members:
+          - gklein
+          - durandom
+          - jflowers
+          - jhutar
+          - ravelley
+          - mrizzi
+          - tpouyer
+          - mfrancisc
+          - jwm4
+          - deboer-tim
+          - dhshah13
+          - shairevivo
+          - andrewevansrh
+          - Aliciapet11
+          - fege
+          - ederign
+          - jctanner
+          - guyoron1
+          - tgeagle081
+        repos:
+          agents: triage
+          experiments: triage
+          fullsend: triage
+      fullsend-writers:
+        description: People with access to /fs-code on the fullsend repo group
+        privacy: closed
+        maintainers:
+          - ralphbean
+        members:
+          - durandom
+          - gklein
+          - jflowers
+          - Roming22
+          - ravelley
+          - jwm4
+          - Benkapner
+          - dhshah13
+          - shairevivo
+          - csoceanu
+          - jctanner
+          - Aliciapet11
+          - ederign
+        repos:
+          agents: write
+          experiments: write
+          fullsend: write
       maintainers:
         description: Maintainers of all repositories
         privacy: closed
@@ -377,14 +429,12 @@ orgs:
           - tgeagle081
         repos:
           agent-eval-harness: triage
-          agents: triage
           assess-rfe: triage
           assess-strat: triage
           devlake: triage
           devlake-telemetry-sidecar: triage
           epic-creator: triage
           epic-creator-eval: triage
-          fullsend: triage
           github-emulator: triage
           metrics-executor: triage
           orgpulse: triage
@@ -414,14 +464,12 @@ orgs:
         repos:
           .fullsend: write
           agent-eval-harness: write
-          agents: write
           assess-rfe: write
           assess-strat: write
           devlake: write
           devlake-telemetry-sidecar: write
           epic-creator: write
           epic-creator-eval: write
-          fullsend: write
           github-emulator: write
           metrics-executor: write
           orgpulse: write
