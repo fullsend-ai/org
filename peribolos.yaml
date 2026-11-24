@@ -233,6 +233,7 @@ orgs:
       react-shopping-cart:
         collaborators:
           shairevivo: admin
+          tonykay: write
       rfe-creator:
         collaborators:
           astefanutti: admin
