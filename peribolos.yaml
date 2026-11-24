@@ -168,6 +168,7 @@ orgs:
           jctanner: maintain
       epic-creator-eval:
         collaborators:
+          MichaelYochpaz: write
           jctanner: admin
           ravelley: admin
           theobarberbany: read
